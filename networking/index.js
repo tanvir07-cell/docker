@@ -1,24 +1,7 @@
-// for stop the server using ctrl+c:
-
-if (process.platform === "win32") {
-  var rl = require("readline").createInterface({
-    input: process.stdin,
-  });
-
-  rl.on("SIGINT", function () {
-    process.emit("SIGINT");
-  });
-}
-
-process.on("SIGINT", function () {
-  //graceful shutdown
-  process.exit();
-});
-
 // more-or-less the example code from the hapi-pino repo
 const hapi = require("@hapi/hapi");
 const { MongoClient } = require("mongodb");
-const url = process.env.MONGO_CONNECTION_STRING || "mongodb://localhost:27017";
+const url = process.env.MONGO_CONNECTION_STRING || "mongodb://db:27017";
 const dbName = "dockerApp";
 const collectionName = "count";
 
@@ -37,13 +20,7 @@ async function start() {
     path: "/",
     async handler() {
       const count = await collection.count();
-      return {
-        success: false,
-        count,
-        rifatIsCool: true,
-        another: "false",
-        oneMore: "true",
-      };
+      return { success: true, count };
     },
   });
 
